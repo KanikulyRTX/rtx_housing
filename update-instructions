@@ -1,0 +1,39 @@
+Last Update Instructions – RTX Housing
+
+This update is primarily focused on performance improvements and stability fixes. A large amount of additional debug logging has been added to help identify issues more easily and prevent crashes, timeouts, and data inconsistencies.
+
+This version was mainly developed and optimized for very large servers with hundreds of players. It is designed to handle a high number of houses, furniture, and active players without performance issues. With these changes, we guarantee stable behavior even under heavy load.
+
+All previously known issues have been addressed in this version.
+
+We are also currently working on a major upcoming update that will introduce new features and further improvements.
+
+Installation Instructions
+
+1. Replace the entire rtx_housing resource with the new version.
+   Do not merge files. A full replacement is required to ensure everything works correctly.
+
+2. Config folder:
+   You may keep your existing config folder.
+   However, you MUST replace the following files with the new versions:
+
+   * config.lua
+
+   This file contain important updates and must not be kept from the old version.
+
+3. HTML folder:
+   You can keep your entire html folder without any changes.
+
+Additional Notes
+
+* This update includes multiple performance optimizations, especially around furniture handling, events, and database usage.
+* Debug messages have been significantly expanded. These will help track down issues if anything goes wrong.
+* The system is now more resistant to spam, race conditions, and heavy usage scenarios.
+
+Important Recommendation
+
+After installing:
+
+* Restart your server completely (not just the resource)
+
+This update is designed to be more stable, scalable, and production-ready for high population servers.
