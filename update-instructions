@@ -15,11 +15,6 @@ Installation Instructions
 
 2. Config folder:
    You may keep your existing config folder.
-   However, you MUST replace the following files with the new versions:
-
-   * config.lua
-
-   This file contain important updates and must not be kept from the old version.
 
 3. HTML folder:
    You can keep your entire html folder without any changes.
