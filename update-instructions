@@ -1,12 +1,32 @@
 Last Update Instructions – RTX Housing
 
-This update is primarily focused on performance improvements and stability fixes. A large amount of additional debug logging has been added to help identify issues more easily and prevent crashes, timeouts, and data inconsistencies.
+We are currently working on a major upcoming update that will introduce new features and further improvements.
 
-This version was mainly developed and optimized for very large servers with hundreds of players. It is designed to handle a high number of houses, furniture, and active players without performance issues. With these changes, we guarantee stable behavior even under heavy load.
+This update is primarily focused on fixing a compatibility issue related to model loading.
 
-All previously known issues have been addressed in this version.
+Important – Reason for This Update
 
-We are also currently working on a major upcoming update that will introduce new features and further improvements.
+Some servers experienced issues where shells or objects were not spawning correctly.
+
+This was caused by inconsistent behavior of the native functions `IsModelInCdimage` and `IsModelValid`. On certain FiveM artifact versions, especially newer ones, these functions may return incorrect results for custom or streamed models.
+
+Because of this, valid models were incorrectly rejected, which led to:
+
+ Shells not spawning
+ Objects failing to load
+ Timeouts during loading
+ Broken interiors or incomplete previews
+
+Changes in This Update
+
+The model loading system has been reworked to ensure consistent behavior across all servers.
+
+ Removed `IsModelInCdimage` and `IsModelValid` as blocking checks
+ Added proper timeout handling to prevent infinite loading loops
+ Unified loading logic for shells, objects, and furniture
+
+With these changes, model loading should now work correctly on all artifact versions and server configurations.
+
 
 Installation Instructions
 
@@ -21,9 +41,10 @@ Installation Instructions
 
 Additional Notes
 
-* This update includes multiple performance optimizations, especially around furniture handling, events, and database usage.
-* Debug messages have been significantly expanded. These will help track down issues if anything goes wrong.
-* The system is now more resistant to spam, race conditions, and heavy usage scenarios.
+ This update improves stability when spawning shells and objects.
+ It reduces issues caused by invalid model detection.
+ The system now behaves consistently across different server setups.
+ Debug logging has been improved to help identify model loading issues.
 
 Important Recommendation
 
@@ -31,4 +52,4 @@ After installing:
 
 * Restart your server completely (not just the resource)
 
-This update is designed to be more stable, scalable, and production-ready for high population servers.
+This update ensures stable and consistent model loading across all supported FiveM artifact versions.
