@@ -1,55 +1,59 @@
-Last Update Instructions – RTX Housing
+RTX Housing System - What's New (v30.0)
 
-We are currently working on a major upcoming update that will introduce new features and further improvements.
+A massive update. This version adds a full mortgage/financing system, a real estate agent economy, custom property types, developer exports, big safety and quality-of-life improvements, and a lot more. Each feature lists its Config option so you know exactly what to set.
 
-This update is primarily focused on fixing a compatibility issue related to model loading.
+Mortgage / Financing (headline feature)
 
-Important – Reason for This Update
+Players can now buy a property with a mortgage instead of paying the full price up front.
 
-Some servers experienced issues where shells or objects were not spawning correctly.
+In the purchase menu there's a new "Buy with mortgage" option, with a clear confirmation showing the down payment, financed amount, interest, per-installment cost, number of installments, and the payment cycle. The player owns the property immediately and owes the remaining balance to the bank. Each cycle an installment is added to the property's Bills, paid manually like any other bill - on its own configurable billing cycle, independent of your rent/tax settings. A polished Mortgage panel in the management dashboard shows remaining balance, amount due, installment, installments left, and a payoff progress bar - with "Pay off remaining" and "End mortgage" buttons. Anti-exploit built in: a mortgaged property cannot be sold to the bank, and selling/transferring it to another player carries the mortgage over to the new owner. Miss too many payments (configurable grace period) and the property is repossessed. Config: Config.Mortgage - enabled, downPaymentPercent, interestPercent, installments, billCycle = { amount, unit }, gracePeriod, label. Custom Property Types
 
-This was caused by inconsistent behavior of the native functions `IsModelInCdimage` and `IsModelValid`. On certain FiveM artifact versions, especially newer ones, these functions may return incorrect results for custom or streamed models.
+Define your own property types with their own behavior - Offices, Warehouses, Labs, Nightclubs, or anything you invent, on Shell or IPL.
 
-Because of this, valid models were incorrectly rejected, which led to:
+Player owned or public - each custom property can either be player owned (bought and owned like any normal property), or set to public access. Public access / open properties - a property doesn't have to be owned. Mark it as public and anyone can enter it freely without buying it (perfect for offices, shops, clubs, and public buildings). Config: Config.EnableCustomPropertyTypes (master switch), Config.CustomPropertyTypes. Public access is a per-property toggle in the property creator. Real Estate Agent System
 
- Shells not spawning
- Objects failing to load
- Timeouts during loading
- Broken interiors or incomplete previews
+Run property sales as a real estate business - decide which properties can only be sold or rented through a real estate agent instead of being bought normally.
 
-Changes in This Update
+Pick exactly which properties are real-estate-only with a per-property toggle in the property creator - only those go through the agent system, the rest work as usual. Or flip one option to make every property real-estate-only at once. On a restricted property, regular players can't Buy/Rent - they see a "Contact a real estate agent" note. An agent gets "Sell to player" / "Rent to player" with a nearby-players picker. Define who counts as an agent by ACE permission, job, or identifier. Config: Config.RealEstateOnlySales - enabled, global (true = all properties, false = only the ones flagged in the creator), agentpermissions = { ace, job, identifiers }. Property Reset System
 
-The model loading system has been reworked to ensure consistent behavior across all servers.
+Automatically wipe a property to a clean state when it changes hands - on sell-to-bank, sell-to-player, or eviction/repossession. Choose exactly what resets (bills, storage, utilities, settings). Also available as an export. Config: Config.PropertyReset - enabled, onSellToBank, onSellToPlayer, onOwnershipChange, reset = { ... }. Export: exports['rtx_housing']:ResetProperty(houseid, override).
 
- Removed `IsModelInCdimage` and `IsModelValid` as blocking checks
- Added proper timeout handling to prevent infinite loading loops
- Unified loading logic for shells, objects, and furniture
+Inactive Property Cleanup
 
-With these changes, model loading should now work correctly on all artifact versions and server configurations.
+Automatically clean up / repossess properties whose owners have gone inactive, on a schedule you control. Config: Config.InactivePropertyCleanup - enabled, inactiveDays, checkEveryMs, ignoreStarter, ignoreRented, deleteStarter.
 
+Starter Apartments
 
-Installation Instructions
+A full starter-apartment system for new players. Auto-expiry / auto-removal of temporary or inactive starters, the option to skip utilities and bills, per-apartment furniture/wardrobe/storage and transfer/sell/list controls, and on-demand assignment. Config: Config.StarterApartments (incl. disableServices, disableBills, expireAfterDays, cantransfer, cansell, canlist), Config.GiveApartments. Export: GivePlayerApartment(source, apartmentId).
 
-1. Replace the entire rtx_housing resource with the new version.
-   Do not merge files. A full replacement is required to ensure everything works correctly.
+Persistent Door Locks
 
-2. Config folder:
-   You may keep your existing config folder.
+Save door lock states to the database and restore them on restart - so doors stay in whatever locked/unlocked state the owner left them. Works for the main door and each individual MLO door. Config: Config.PersistDoorLocks (true / false).
 
-3. HTML folder:
-   You can keep your entire html folder without any changes.
+Furniture: Return to Inventory & Resell
 
-Additional Notes
+Removing placed furniture can return it to the inventory instead of destroying it - so it can be placed again or resold. Optional place-after-purchase flow included. Config: Config.FurnitureSystem - removeReturnsToInventory, furnitureplaceafterpurchase, furnituredelivery, furnitureshop, furniturelimit.
 
- This update improves stability when spawning shells and objects.
- It reduces issues caused by invalid model detection.
- The system now behaves consistently across different server setups.
- Debug logging has been improved to help identify model loading issues.
+Image Hosting: FiveManage Support
 
-Important Recommendation
+Property images can be uploaded via FiveManage's media library, alongside the existing Discord option. Config: Config.ImageUpload - provider ("discord" / "fivemanage"), fivemanageToken.
 
-After installing:
+Flexible Payment Methods
 
-* Restart your server completely (not just the resource)
+In the purchase menu players can now choose how they pay - cash, bank card, or a custom currency. For each property you can set separately which payment methods are allowed (cash only, bank only, both, or a custom currency) - great for VIP / custom currency setups. Config: Config.PaymentMethod ("cash" / "bank" / "both") plus a per-property payment method set in the property creator, Config.CustomCurrency, Config.Currency. Property Creator Upgrades
 
-This update ensures stable and consistent model loading across all supported FiveM artifact versions.
+Property list filters - live search plus filters by status (All / Owned / For Sale), type (SHELL / IPL / MLO / Starter / Complex), and availability (Sale / Rent / Both), with pagination. Copy / duplicate a property - clone an existing SHELL/IPL property (with all its settings) straight from the creator's list to quickly build similar ones. "No doors" option, and adjustable polyzone height when creating door / entry zones. Per-property custom type, public access, real-estate-only, and payment method. Config: Config.PropertyCreatorCommand, Config.PropertyCreatorFilters, Config.PropertyCreatorPermissions. Deliveries + Developer Exports & Commands
+
+Delivery export so other scripts can drop item deliveries into a customer's property Deliveries tab: AddPropertyDelivery(houseid, delivery). Menu exports: OpenFurnitureShop, OpenPropertyMarket / OpenListings, OpenManagementMenu, ResetProperty. /giveproperty admin command - give/assign a property to any player by server id or identifier (works offline): /giveproperty [playerid | identifier] [propertyid]. /kickfromproperty admin command - kick a player out of the property they're currently inside: /kickfromproperty [playerid]. Config: Config.AdminPermissions - command (kick), givecommand, plus ace / job / identifiers. See RTX_EXPORTS.md for all exports. Full Multi-Language Support (18 Languages)
+
+Now shipping with 18 languages: English, Czech, German, Spanish, French, Polish, Portuguese, Italian, Russian, Turkish, Korean, Dutch, Chinese, Romanian, Hungarian, Thai, Japanese, Arabic. The translation system has been made much simpler - the entire housing system can be translated through just 2 files: language/<code>.lua (all in-game text) and html/languages/<code>.json (all UI text). No more hunting through the code - everything lives in those two files, so translating the full resource is quick and clean. Interaction prompts are fully localized too. Config: Config.Language (files in language/<code>.lua and html/languages/<code>.json).
+
+Performance & Data Handling
+
+The property loading system has been reworked to handle a very large number of properties and data smoothly, staying responsive as your server grows. Robust automatic database migration adds new columns safely and only when missing - fully additive and production-safe.
+
+Quality-of-Life & Polish
+
+Numerous UI/UX refinements across menus - cleaner cards, consistent styling, live-updating panels (bills, mortgage, upgrades), and better spacing throughout.
+
+RTX Housing System - v30.0 - https://rtx.tebex.io/package/7419073
