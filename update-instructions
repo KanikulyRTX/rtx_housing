@@ -1,59 +1,7 @@
-RTX Housing System - What's New (v30.0)
+RTX Housing System 45.0 - the biggest update ever
 
-A massive update. This version adds a full mortgage/financing system, a real estate agent economy, custom property types, developer exports, big safety and quality-of-life improvements, and a lot more. Each feature lists its Config option so you know exactly what to set.
+What to replace:
 
-Mortgage / Financing (headline feature)
+Replace ALL files of rtx_housing, including config.lua, the html folder and the configs folder (8 new config files, new pet furniture in configs/furniture.lua). Then copy your own settings back into the new files. Replace rtx_housing_coreprops too, it contains the new pet models (stream/[pets]). Start it before rtx_housing. Add the new hotel_keycard item (uses metadata) to your inventory. Optional: evidence_bag and pet food items. You can find all items in the Items folder. New database tables are created automatically, no SQL import needed. Check the positions of the pet shops, post offices and LS Stays booking points on your map. What's new:
 
-Players can now buy a property with a mortgage instead of paying the full price up front.
-
-In the purchase menu there's a new "Buy with mortgage" option, with a clear confirmation showing the down payment, financed amount, interest, per-installment cost, number of installments, and the payment cycle. The player owns the property immediately and owes the remaining balance to the bank. Each cycle an installment is added to the property's Bills, paid manually like any other bill - on its own configurable billing cycle, independent of your rent/tax settings. A polished Mortgage panel in the management dashboard shows remaining balance, amount due, installment, installments left, and a payoff progress bar - with "Pay off remaining" and "End mortgage" buttons. Anti-exploit built in: a mortgaged property cannot be sold to the bank, and selling/transferring it to another player carries the mortgage over to the new owner. Miss too many payments (configurable grace period) and the property is repossessed. Config: Config.Mortgage - enabled, downPaymentPercent, interestPercent, installments, billCycle = { amount, unit }, gracePeriod, label. Custom Property Types
-
-Define your own property types with their own behavior - Offices, Warehouses, Labs, Nightclubs, or anything you invent, on Shell or IPL.
-
-Player owned or public - each custom property can either be player owned (bought and owned like any normal property), or set to public access. Public access / open properties - a property doesn't have to be owned. Mark it as public and anyone can enter it freely without buying it (perfect for offices, shops, clubs, and public buildings). Config: Config.EnableCustomPropertyTypes (master switch), Config.CustomPropertyTypes. Public access is a per-property toggle in the property creator. Real Estate Agent System
-
-Run property sales as a real estate business - decide which properties can only be sold or rented through a real estate agent instead of being bought normally.
-
-Pick exactly which properties are real-estate-only with a per-property toggle in the property creator - only those go through the agent system, the rest work as usual. Or flip one option to make every property real-estate-only at once. On a restricted property, regular players can't Buy/Rent - they see a "Contact a real estate agent" note. An agent gets "Sell to player" / "Rent to player" with a nearby-players picker. Define who counts as an agent by ACE permission, job, or identifier. Config: Config.RealEstateOnlySales - enabled, global (true = all properties, false = only the ones flagged in the creator), agentpermissions = { ace, job, identifiers }. Property Reset System
-
-Automatically wipe a property to a clean state when it changes hands - on sell-to-bank, sell-to-player, or eviction/repossession. Choose exactly what resets (bills, storage, utilities, settings). Also available as an export. Config: Config.PropertyReset - enabled, onSellToBank, onSellToPlayer, onOwnershipChange, reset = { ... }. Export: exports['rtx_housing']:ResetProperty(houseid, override).
-
-Inactive Property Cleanup
-
-Automatically clean up / repossess properties whose owners have gone inactive, on a schedule you control. Config: Config.InactivePropertyCleanup - enabled, inactiveDays, checkEveryMs, ignoreStarter, ignoreRented, deleteStarter.
-
-Starter Apartments
-
-A full starter-apartment system for new players. Auto-expiry / auto-removal of temporary or inactive starters, the option to skip utilities and bills, per-apartment furniture/wardrobe/storage and transfer/sell/list controls, and on-demand assignment. Config: Config.StarterApartments (incl. disableServices, disableBills, expireAfterDays, cantransfer, cansell, canlist), Config.GiveApartments. Export: GivePlayerApartment(source, apartmentId).
-
-Persistent Door Locks
-
-Save door lock states to the database and restore them on restart - so doors stay in whatever locked/unlocked state the owner left them. Works for the main door and each individual MLO door. Config: Config.PersistDoorLocks (true / false).
-
-Furniture: Return to Inventory & Resell
-
-Removing placed furniture can return it to the inventory instead of destroying it - so it can be placed again or resold. Optional place-after-purchase flow included. Config: Config.FurnitureSystem - removeReturnsToInventory, furnitureplaceafterpurchase, furnituredelivery, furnitureshop, furniturelimit.
-
-Image Hosting: FiveManage Support
-
-Property images can be uploaded via FiveManage's media library, alongside the existing Discord option. Config: Config.ImageUpload - provider ("discord" / "fivemanage"), fivemanageToken.
-
-Flexible Payment Methods
-
-In the purchase menu players can now choose how they pay - cash, bank card, or a custom currency. For each property you can set separately which payment methods are allowed (cash only, bank only, both, or a custom currency) - great for VIP / custom currency setups. Config: Config.PaymentMethod ("cash" / "bank" / "both") plus a per-property payment method set in the property creator, Config.CustomCurrency, Config.Currency. Property Creator Upgrades
-
-Property list filters - live search plus filters by status (All / Owned / For Sale), type (SHELL / IPL / MLO / Starter / Complex), and availability (Sale / Rent / Both), with pagination. Copy / duplicate a property - clone an existing SHELL/IPL property (with all its settings) straight from the creator's list to quickly build similar ones. "No doors" option, and adjustable polyzone height when creating door / entry zones. Per-property custom type, public access, real-estate-only, and payment method. Config: Config.PropertyCreatorCommand, Config.PropertyCreatorFilters, Config.PropertyCreatorPermissions. Deliveries + Developer Exports & Commands
-
-Delivery export so other scripts can drop item deliveries into a customer's property Deliveries tab: AddPropertyDelivery(houseid, delivery). Menu exports: OpenFurnitureShop, OpenPropertyMarket / OpenListings, OpenManagementMenu, ResetProperty. /giveproperty admin command - give/assign a property to any player by server id or identifier (works offline): /giveproperty [playerid | identifier] [propertyid]. /kickfromproperty admin command - kick a player out of the property they're currently inside: /kickfromproperty [playerid]. Config: Config.AdminPermissions - command (kick), givecommand, plus ace / job / identifiers. See RTX_EXPORTS.md for all exports. Full Multi-Language Support (18 Languages)
-
-Now shipping with 18 languages: English, Czech, German, Spanish, French, Polish, Portuguese, Italian, Russian, Turkish, Korean, Dutch, Chinese, Romanian, Hungarian, Thai, Japanese, Arabic. The translation system has been made much simpler - the entire housing system can be translated through just 2 files: language/<code>.lua (all in-game text) and html/languages/<code>.json (all UI text). No more hunting through the code - everything lives in those two files, so translating the full resource is quick and clean. Interaction prompts are fully localized too. Config: Config.Language (files in language/<code>.lua and html/languages/<code>.json).
-
-Performance & Data Handling
-
-The property loading system has been reworked to handle a very large number of properties and data smoothly, staying responsive as your server grows. Robust automatic database migration adds new columns safely and only when missing - fully additive and production-safe.
-
-Quality-of-Life & Polish
-
-Numerous UI/UX refinements across menus - cleaner cards, consistent styling, live-updating panels (bills, mortgage, upgrades), and better spacing throughout.
-
-RTX Housing System - v30.0 - https://rtx.tebex.io/package/7419073
+Pets: dogs, cats, rabbits, hamsters, guinea pigs, rats and fish with custom cages, needs and care, smart behaviour, guard dogs, rat on your shoulder Hotels and Motels: shell/IPL hotels or real MLO motel rooms with real doors, key cards, room menu with room service, minibar and housekeeping, room upgrades, reviews Hotel Business: players buy and run hotels with staff, promotions and upgrades LS Stays: booking app with filters, booking from anywhere and GPS to your room Short Stays: players rent out their own home Live Property Auctions: repossessed properties are auctioned at the house with an auctioneer Search Warrants and Break-in Evidence: fingerprints, footprints, fibers, tool marks Camera Recordings: who came in and out, with portraits Home Insurance: plans and automatic claims after break-ins Mail and Post Office: letters and packages to any address Home Spawn: wake up in your own bed Furniture Catalog: add furniture in game, smart import of any prop pack, photo studio Migration: easy migration from any housing system New property market filters, key blips, new exports, events and commands All new texts in 18 languages Documentation: https://rtx-dev.gitbook.io/rtxdev/rtx-housing-system Video: https://www.youtube.com/watch?v=yuxJwlB0HAk
